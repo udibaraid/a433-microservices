@@ -1,0 +1,41 @@
+# Versi API yg didefinisikan
+apiVersion: v1
+# Jenis Objek Kubernetes
+kind: PersistentVolume
+# Meta data untuk PersistentVolume
+metadata:
+  # Nama PersistentVolume
+  name: mongo-pv
+  # Label PersistentVolume
+  labels:
+    type: local
+# Spesifikasi untuk PersistentVolume  
+spec:
+  storageClassName: manual
+  # Kapasitas penyimpanan
+  capacity:
+    storage: 20Gi
+  # Akses mode untuk PersistentVolume
+  accessModes:
+    - ReadWriteOnce
+  # Path di host untuk meyimpan data
+  hostPath:
+    path: "/mnt/data"
+---
+# Versi API yg didefinisikan
+apiVersion: v1
+# Jenis Objek Kubernetes
+kind: PersistentVolumeClaim
+# Meta data untuk PersistentVolumeClaim
+metadata:
+  # Nama PersistentVolumeClaim
+  name: mongo-pvc
+# Spesifikasi untuk Deployment  
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  # Resource yang digunakan untuk PersistentVolumeClaim
+  resources:
+    requests:
+      storage: 20Gi

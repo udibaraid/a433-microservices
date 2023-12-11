@@ -1,0 +1,8 @@
+https://hub.docker.com/r/udibara/karsajobs
+
+https://hub.docker.com/r/udibara/karsajobs-ui
+
+https://github.com/users/udibaraid/packages/container/package/karsajobs
+
+https://github.com/users/udibaraid/packages/container/package/karsajobs-ui
+
