@@ -13,13 +13,13 @@ jobs:
     - checkout
     - run:
         name: Run Unit Tests
-        command: go test -v -short --count=1 $(go list ./ ..)
+        command: go test -v -short --count=1 $(go list ./ ...)
 
   
   build-app-karsajobs:
     executor: docker/docker
     environment:
-      IMAGE_NAME: ghcr.io/udibaraid/karsajobs
+      IMAGE_NAME: ghcr.io/udibaraid/karsajobs-ui
     steps:
       - checkout
       - setup_remote_docker
