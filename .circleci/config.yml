@@ -1,35 +1,73 @@
 version: 2.1
+# Versi konfigurasi CircleCI yang digunakan.
+
 jobs:
+  # Definisi pekerjaan-pekerjaan yang akan dijalankan pada CI/CD pipeline.
+  
   lint-dockerfile:
+    # Pekerjaan untuk melakukan linting pada Dockerfile menggunakan Hadolint.
     docker:
       - image: cimg/base:stable
+      # Menggunakan base image dari CircleCI dengan tag stable.
+
     steps:
       - checkout
+      # Mendapatkan kode dari repository.
+
       - setup_remote_docker
+      # Persiapan untuk menjalankan perintah Docker pada remote host.
+
       - run:
           name: Run hadolint
+          # Menjalankan Hadolint untuk memeriksa Dockerfile.
           command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+          # Perintah untuk menjalankan Hadolint pada Dockerfile.
+
   test-app:
+    # Pekerjaan untuk menjalankan uji coba pada aplikasi Go.
     docker:
       - image: cimg/go:1.15.15
+      # Menggunakan base image untuk Go dengan versi 1.15.15.
+
     steps:
       - checkout
+      # Mendapatkan kode dari repository.
+
       - run: go test -v -short --count=1 $(go list ./...)
+      # Menjalankan uji coba pada aplikasi Go.
+
   build-app-karsajobs:
+    # Pekerjaan untuk membangun dan menerbitkan gambar Docker.
     docker:
       - image: cimg/base:stable
+      # Menggunakan base image dari CircleCI dengan tag stable.
+
     steps:
       - checkout
+      # Mendapatkan kode dari repository.
+
       - setup_remote_docker
+      # Persiapan untuk menjalankan perintah Docker pada remote host.
+
       - run: ./build_push_image_karsajobs.sh
+      # Menjalankan skrip untuk membangun dan menerbitkan gambar Docker.
+
 workflows:
   version: 2
+  # Versi konfigurasi workflow.
+
   test-and-build:
+    # Definisi workflow bernama "test-and-build".
     jobs:
       - lint-dockerfile
+      # Menjalankan pekerjaan lint-dockerfile terlebih dahulu.
+
       - test-app:
           requires:
             - lint-dockerfile
+          # Menjalankan pekerjaan test-app setelah lint-dockerfile berhasil.
+
       - build-app-karsajobs:
           requires:
             - test-app
+          # Menjalankan pekerjaan build-app-karsajobs setelah test-app berhasil.
