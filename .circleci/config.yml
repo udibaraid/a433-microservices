@@ -1,26 +1,53 @@
 version: 2.1
+# Versi konfigurasi CircleCI yang digunakan.
+
 jobs:
   lint-dockerfile:
+    # Pekerjaan untuk melakukan linting pada Dockerfile menggunakan Hadolint.
     docker:
       - image: cimg/base:stable
+      # Menggunakan base image dari CircleCI dengan tag stable.
+
     steps:
       - checkout
+      # Mendapatkan kode dari repository.
+
       - setup_remote_docker
+      # Persiapan untuk menjalankan perintah Docker pada remote host.
+
       - run:
           name: Run hadolint
+          # Menjalankan Hadolint untuk memeriksa Dockerfile.
           command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+          # Perintah untuk menjalankan Hadolint pada Dockerfile.
+
   build-app-karsajobs-ui:
+    # Pekerjaan untuk membangun dan menerbitkan gambar Docker untuk aplikasi KarsaJobs UI.
     docker:
       - image: cimg/base:stable
+      # Menggunakan base image dari CircleCI dengan tag stable.
+
     steps:
       - checkout
+      # Mendapatkan kode dari repository.
+
       - setup_remote_docker
+      # Persiapan untuk menjalankan perintah Docker pada remote host.
+
       - run: ./build_push_image_karsajobs_ui.sh
+      # Menjalankan skrip untuk membangun dan menerbitkan gambar Docker.
+
 workflows:
   version: 2
+  # Versi konfigurasi workflow.
+
   lint-and-build:
+    # Definisi workflow bernama "lint-and-build".
     jobs:
       - lint-dockerfile
+      # Menjalankan pekerjaan lint-dockerfile.
+
       - build-app-karsajobs-ui:
           requires:
             - lint-dockerfile
+          # Menjalankan pekerjaan build-app-karsajobs-ui setelah lint-dockerfile berhasil.
