@@ -32,7 +32,7 @@ spec:
       # Nama Container
       - name: mongodb
       # Nama image yang digunakan untuk membuat container
-        image: mongo:4.4.3
+        image: mongo:4.4.25
         # Port yang digunakan
         ports:
         # Port yang digunakan untuk mengakses container
